@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btnCalculate;
     TextView tvResult;
 
+    private static final String STATE_RESULT = "state_result";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,9 +29,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvResult = findViewById(R.id.tv_result);
 //  set onclicklistener untuk tombol pada activity ini
         btnCalculate.setOnClickListener(this);
+//  menampilkan data dari STATE_RESULT bila savedinstancestate tidak kosong
+        if (savedInstanceState != null) {
+            String result = savedInstanceState.getString(STATE_RESULT);
+            tvResult.setText(result);
+        }
     }
-
-
+//onclick
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_calculate) {
@@ -84,13 +90,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-
+//todouble
     Double toDouble(String str) {
         try {
             return Double.valueOf(str);
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        mengisi STATE_RESULT dari hasil di tvresult dengan type string
+        outState.putString(STATE_RESULT, tvResult.getText().toString());
     }
 
     @Override
